@@ -4,3 +4,9 @@
 [submodule "cron"]
 	path = cron
 	url = git@github.com:davidmarble/cookbook-cron.git
+[submodule "apt"]
+	path = apt
+	url = https://github.com/opscode-cookbooks/apt.git
+[submodule "yum"]
+	path = yum
+	url = https://github.com/opscode-cookbooks/yum.git
