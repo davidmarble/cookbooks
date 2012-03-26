@@ -1,0 +1,3 @@
+[submodule "build-essential"]
+	path = build-essential
+	url = git://github.com/opscode-cookbooks/build-essential.git
