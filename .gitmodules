@@ -1,3 +1,6 @@
 [submodule "build-essential"]
 	path = build-essential
 	url = git://github.com/opscode-cookbooks/build-essential.git
+[submodule "cron"]
+	path = cron
+	url = git@github.com:davidmarble/cookbook-cron.git
