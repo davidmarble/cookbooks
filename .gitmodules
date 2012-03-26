@@ -16,3 +16,6 @@
 [submodule "java"]
 	path = java
 	url = https://github.com/opscode-cookbooks/java.git
+[submodule "logrotate"]
+	path = logrotate
+	url = https://github.com/opscode-cookbooks/logrotate.git
