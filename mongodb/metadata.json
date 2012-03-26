@@ -1,0 +1,34 @@
+{
+  "dependencies": {
+  },
+  "name": "mongodb",
+  "maintainer_email": "davidmarble@gmail.com",
+  "attributes": {
+  },
+  "license": "MIT",
+  "suggestions": {
+  },
+  "platforms": {
+    "debian": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0",
+    "redhat": ">= 0.0.0"
+  },
+  "maintainer": "David Marble",
+  "long_description": "",
+  "version": "0.1.0",
+  "recommendations": {
+  },
+  "recipes": {
+    "mongodb": ""
+  },
+  "groupings": {
+  },
+  "conflicting": {
+  },
+  "replacing": {
+  },
+  "description": "mongodb recipes",
+  "providing": {
+  }
+}
