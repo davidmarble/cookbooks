@@ -19,3 +19,6 @@
 [submodule "logrotate"]
 	path = logrotate
 	url = https://github.com/opscode-cookbooks/logrotate.git
+[submodule "mercurial"]
+	path = mercurial
+	url = https://github.com/opscode-cookbooks/mercurial.git
