@@ -1,0 +1,66 @@
+CLASSPATH=$ES_CLASSPATH:$CLASSPATH
+
+# Arguments to pass to the JVM
+# java.net.preferIPv4Stack=true: Better OOTB experience, especially with jgroups
+ES_JAVA_OPTS=" \
+	-Djline.enabled=true \
+	-Djava.net.preferIPv4Stack=true \
+	-XX:+AggressiveOpts \
+	-XX:+UseParNewGC \
+	-XX:+UseConcMarkSweepGC \
+	-XX:+CMSParallelRemarkEnabled \
+	-XX:+HeapDumpOnOutOfMemoryError \
+	-XX:CMSInitiatingOccupancyFraction=88"
+
+<% if node.kernel.machine == 'x86_64' -%>
+# run compressed pointers to save on heap
+ES_JAVA_OPTS="$ES_JAVA_OPTS -XX:+UseCompressedOops"
+<% end -%>
+
+# Directory where the ElasticSearch binary distribution resides
+ES_HOME=<%= node.elasticsearch.home_link %>
+
+# Minimum Heap memory to run ElasticSearch
+ES_MIN_MEM=<%= node.elasticsearch.ES_MIN_MEM %>M
+
+# Maximum Heap memory to run ElasticSearch
+ES_MAX_MEM=<%= node.elasticsearch.ES_MAX_MEM %>M
+
+# ElasticSearch log directory
+LOG_DIR=<%= node.elasticsearch.path_logs %>
+
+# ElasticSearch data directory
+DATA_DIR=<%= node.elasticsearch.path_data %>
+
+# ElasticSearch work directory
+WORK_DIR=<%= node.elasticsearch.path_work %>
+
+# ElasticSearch configuration directory
+CONF_DIR=<%= node.elasticsearch.path_conf %>
+
+# ElasticSearch configuration file (elasticsearch.yml)
+CONF_FILE=$CONF_DIR/elasticsearch.yml
+
+ES_CLASSPATH=$ES_HOME/lib/*.jar:$ES_HOME/lib/sigar/*.jar
+
+PID_FILE=<%= node.elasticsearch.path_run %>/$NAME.pid
+
+# End of variables that can be overwritten in $DEFAULT
+DEFAULT=/etc/default/elasticsearch
+
+# overwrite settings from default file
+if [ -f "$DEFAULT" ]; then
+	. "$DEFAULT"
+fi
+
+export ES_HOME ES_MIN_MEM ES_MAX_MEM ES_CLASSPATH
+
+ES_JAVA_OPTS="$ES_JAVA_OPTS \
+	-Xms<%= node.elasticsearch.ES_MIN_MEM -%>M \
+	-Xmx<%= node.elasticsearch.ES_MAX_MEM -%>M \
+	-Des.config=$CONF_FILE \
+	-Des.path.home=$ES_HOME \
+	-Des.path.logs=$LOG_DIR \
+	-Des.path.data=$DATA_DIR \
+	-Des.path.work=$WORK_DIR \
+	-Des.path.conf=$CONF_DIR"

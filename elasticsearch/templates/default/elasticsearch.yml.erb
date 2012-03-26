@@ -1,0 +1,7 @@
+cluster.name: <%= node.elasticsearch.cluster_name %>
+path.conf: <%= node.elasticsearch.path_conf %>
+path.data: <%= node.elasticsearch.path_data %>
+path.work: <%= node.elasticsearch.version_home -%>/work
+path.logs: <%= node.elasticsearch.path_logs %>
+path.plugins: <%= node.elasticsearch.version_home -%>/plugins
+http.port: <%= node.elasticsearch.port %>

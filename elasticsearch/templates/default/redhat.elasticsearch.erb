@@ -1,0 +1,174 @@
+#!/bin/sh
+#
+# /etc/init.d/elasticsearch -- startup script for Elasticsearch
+#
+# Written by Miquel van Smoorenburg <miquels@cistron.nl>.
+# Modified for Debian GNU/Linux	by Ian Murdock <imurdock@gnu.ai.mit.edu>.
+# Modified for Tomcat by Stefan Gybas <sgybas@debian.org>.
+# Modified for Tomcat6 by Thierry Carrez <thierry.carrez@ubuntu.com>.
+# Additional improvements by Jason Brittain <jason.brittain@mulesoft.com>.
+# Modified by Nicolas Huray for ElasticSearch <nicolas.huray@gmail.com>.
+#
+### BEGIN INIT INFO
+# Provides:		  elasticsearch
+# Required-Start:	$all
+# Required-Stop:	 $all
+# Default-Start:	 2 3 4 5
+# Default-Stop:	  0 1 6
+# Short-Description: Starts elasticsearch
+# Description:	   Starts elasticsearch using start-stop-daemon
+### END INIT INFO
+
+#set -e
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+NAME=elasticsearch
+DESC="ElasticSearch Server"
+DEFAULT=/etc/default/$NAME
+lockfile="/var/lock/subsys/$NAME"
+
+if [ `id -u` -ne 0 ]; then
+	echo "You need root privileges to run this script"
+	exit 1
+fi
+
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# The following variables can be overwritten in $DEFAULT
+
+# Run ElasticSearch as this user ID and group ID
+ES_USER=elasticsearch
+ES_GROUP=elasticsearch
+
+# The first existing directory is used for JAVA_HOME (if JAVA_HOME is not defined in $DEFAULT)
+JDK_DIRS="/usr/lib/jvm/java-6-openjdk /usr/lib/jvm/java-6-sun /usr/lib/jvm/java-openjdk /usr/lib/jvm/java-sun"
+
+# Look for the right JVM to use
+for jdir in $JDK_DIRS; do
+	if [ -r "$jdir/bin/java" -a -z "${JAVA_HOME}" ]; then
+	JAVA_HOME="$jdir"
+	fi
+done
+export JAVA_HOME
+
+# Directory where the ElasticSearch binary distribution resides
+ES_HOME=<%= node.elasticsearch.home_link %>
+
+# Minimum Heap memory to run ElasticSearch
+ES_MIN_MEM=<%= node.elasticsearch.ES_MIN_MEM %>m
+
+# Maximum Heap memory to run ElasticSearch
+ES_MAX_MEM=<%= node.elasticsearch.ES_MAX_MEM %>m
+
+# ElasticSearch log directory
+LOG_DIR=<%= node.elasticsearch.path_logs %>
+
+# ElasticSearch data directory
+DATA_DIR=<%= node.elasticsearch.path_data %>
+
+# ElasticSearch work directory
+WORK_DIR=<%= node.elasticsearch.path_work %>
+
+# ElasticSearch configuration directory
+CONF_DIR=<%= node.elasticsearch.path_conf %>
+
+# ElasticSearch configuration file (elasticsearch.yml)
+CONF_FILE=$CONF_DIR/elasticsearch.yml
+
+# Include shell script to run when elasticsearch begins
+ES_INCLUDE=$CONF_DIR/elasticsearch.in.sh
+
+ES_CLASSPATH=$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
+
+# End of variables that can be overwritten in $DEFAULT
+
+# overwrite settings from default file
+if [ -f "$DEFAULT" ]; then
+	. "$DEFAULT"
+fi
+
+# Define other required variables
+PID_FILE=<%= node.elasticsearch.path_run %>/$NAME.pid
+DAEMON=$ES_HOME/bin/elasticsearch
+DAEMON_OPTS="-p $PID_FILE -Des.config=$CONF_FILE -Des.path.home=$ES_HOME -Des.path.logs=$LOG_DIR -Des.path.data=$DATA_DIR -Des.path.work=$WORK_DIR -Des.path.conf=$CONF_DIR"
+
+export ES_HOME ES_MIN_MEM ES_MAX_MEM ES_INCLUDE ES_CLASSPATH
+
+# Check DAEMON exists
+test -x $DAEMON || exit 0
+
+case "$1" in
+  start)
+	if [ -z "$JAVA_HOME" ]; then
+		echo -n "no JDK found - please set JAVA_HOME"
+		exit 1
+	fi
+
+	echo -n "Starting $DESC: "
+	
+	# Prepare environment
+	mkdir -p "$LOG_DIR" "$DATA_DIR" "$WORK_DIR" && chown "$ES_USER":"$ES_GROUP" "$LOG_DIR" "$DATA_DIR" "$WORK_DIR"
+	touch "$PID_FILE" && chown "$ES_USER":"$ES_GROUP" "$PID_FILE"
+	ulimit -n <%= @node[:elasticsearch][:fd_ulimit] %>
+	
+	# start daemon
+	daemon --user "$ES_USER" $DAEMON $DAEMON_OPTS -p $PID_FILE
+	RETVAL=$?
+	echo
+	if [ $RETVAL -eq 0 ]; then
+		echo -n "started"
+		touch $lockfile
+	elif pgrep -f $NAME; then
+		echo -n "already running"
+	else
+		if [ -f "$PID_FILE" ]; then
+			rm -f "$PID_FILE"
+		fi
+		echo "failed"
+	fi
+	exit 0
+	;;		
+  stop)
+	echo -n "Stopping $DESC: "
+	#set +e
+	if [ -f "$PID_FILE" ]; then
+		killproc -p $PID_FILE $NAME
+		retval=$?
+		echo
+		if [ $retval -eq 0 ]; then
+			rm -f "$PID_FILE"
+			rm -f $lockfile
+			echo "stopped"
+		elif [ $retval -eq 1 ]; then
+			echo -n "not running but pid file exists, cleaning up"
+			rm -f "$PID_FILE"
+		else
+			PID="`cat $PID_FILE`"
+			echo -n "Failed to stop pid=$PID"
+			exit 1
+		fi
+	else
+		echo -n "not running"
+	fi
+	#set -e
+	exit 0
+	;;
+  status)
+	status $NAME
+	;;
+  restart|force-reload)
+	if [ -f "$PID_FILE" ]; then
+		$0 stop
+		sleep 1
+	fi
+	$0 start
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart|force-reload|status}"
+	exit 1
+	;;
+esac
+
+exit 0

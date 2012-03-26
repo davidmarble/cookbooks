@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "java": ">= 0.0.0",
+    "utils": ">= 0.0.0"
+  },
+  "name": "elasticsearch",
+  "maintainer_email": "davidmarble@gmail.com",
+  "attributes": {
+  },
+  "license": "MIT",
+  "suggestions": {
+  },
+  "platforms": {
+  },
+  "maintainer": "David Marble",
+  "long_description": "",
+  "version": "0.1.0",
+  "recommendations": {
+  },
+  "recipes": {
+  },
+  "groupings": {
+  },
+  "conflicting": {
+  },
+  "replacing": {
+  },
+  "description": "elasticsearch",
+  "providing": {
+  }
+}
