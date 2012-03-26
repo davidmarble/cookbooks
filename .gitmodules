@@ -13,3 +13,6 @@
 [submodule "git"]
 	path = git
 	url = https://github.com/opscode-cookbooks/git.git
+[submodule "java"]
+	path = java
+	url = https://github.com/opscode-cookbooks/java.git
