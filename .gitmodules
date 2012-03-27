@@ -40,3 +40,6 @@
 [submodule "sudo"]
 	path = sudo
 	url = git@github.com:davidmarble/cookbook-sudo.git
+[submodule "supervisor"]
+	path = supervisor
+	url = git@github.com:davidmarble/cookbook-supervisor.git
