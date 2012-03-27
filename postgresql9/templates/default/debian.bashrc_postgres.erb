@@ -1,0 +1,4 @@
+# postgres settings
+export LD_LIBRARY_PATH=/usr/lib/postgresql/<%= node.postgresql9.version -%>/lib
+export PGDATA=/var/lib/postgresql/<%= node.postgresql9.version -%>/main
+export PATH=/usr/lib/postgresql/<%= node.postgresql9.version -%>bin:$PATH
