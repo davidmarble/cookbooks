@@ -49,3 +49,6 @@
 [submodule "webapp"]
 	path = webapp
 	url = git@github.com:davidmarble/cookbook-webapp.git
+[submodule "zlib"]
+	path = zlib
+	url = https://github.com/opscode-cookbooks/zlib.git
