@@ -34,3 +34,6 @@
 [submodule "python"]
 	path = python
 	url = git@github.com:davidmarble/cookbook-python.git
+[submodule "rsync"]
+	path = rsync
+	url = https://github.com/opscode-cookbooks/rsync.git
