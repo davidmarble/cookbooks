@@ -25,3 +25,6 @@
 [submodule "nginx"]
 	path = nginx
 	url = git@github.com:davidmarble/cookbook-nginx.git
+[submodule "openssh"]
+	path = openssh
+	url = https://github.com/opscode-cookbooks/openssh.git
