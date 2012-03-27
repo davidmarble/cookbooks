@@ -1,0 +1,22 @@
+[databases]
+<%= node.pgbouncer.databases %>
+
+[pgbouncer]
+logfile = /var/log/pgbouncer.log
+pidfile = /var/run/pgbouncer/pgbouncer.pid
+listen_addr = *
+listen_port = 6000
+#unix_socket_dir = /var/run/pgbouncer
+auth_type = md5
+auth_file = /etc/pgbouncer/userlist.txt
+admin_users = <%= node.pgbouncer.admin_users %>
+stats_users = <%= node.pgbouncer.stats_users %>
+pool_mode = transaction
+server_reset_query = DISCARD ALL;
+server_check_query = select 1
+server_check_delay = 10
+max_client_conn = 1000
+default_pool_size = 20
+log_connections = 1
+log_disconnections = 1
+log_pooler_errors = 1
