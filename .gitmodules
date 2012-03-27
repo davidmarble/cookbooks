@@ -22,3 +22,6 @@
 [submodule "mercurial"]
 	path = mercurial
 	url = https://github.com/opscode-cookbooks/mercurial.git
+[submodule "nginx"]
+	path = nginx
+	url = git@github.com:davidmarble/cookbook-nginx.git
