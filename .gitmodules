@@ -31,3 +31,6 @@
 [submodule "utils"]
 	path = utils
 	url = git@github.com:davidmarble/cookbook-utils.git
+[submodule "python"]
+	path = python
+	url = git@github.com:davidmarble/cookbook-python.git
