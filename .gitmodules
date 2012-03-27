@@ -28,3 +28,6 @@
 [submodule "openssh"]
 	path = openssh
 	url = https://github.com/opscode-cookbooks/openssh.git
+[submodule "utils"]
+	path = utils
+	url = git@github.com:davidmarble/cookbook-utils.git
