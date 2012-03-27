@@ -10,9 +10,6 @@ a lightweight connection pooler for PostgreSQL.
 
 # Usage
 
-Make sure to rename this repo to pgbouncer if you clone it directly 
-or use it in a project as a git submodule.
-
 In your chef configuration, you must define keys to populate the pgbouncer 
 configuration files. See `templates/` for the actual files. Here is an example 
 configuration in JSON:
