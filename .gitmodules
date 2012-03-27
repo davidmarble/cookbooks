@@ -46,3 +46,6 @@
 [submodule "vim"]
 	path = vim
 	url = https://github.com/opscode-cookbooks/vim.git
+[submodule "webapp"]
+	path = webapp
+	url = git@github.com:davidmarble/cookbook-webapp.git
