@@ -37,3 +37,6 @@
 [submodule "rsync"]
 	path = rsync
 	url = https://github.com/opscode-cookbooks/rsync.git
+[submodule "sudo"]
+	path = sudo
+	url = git@github.com:davidmarble/cookbook-sudo.git
