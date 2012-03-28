@@ -3,52 +3,52 @@
 	url = git://github.com/opscode-cookbooks/build-essential.git
 [submodule "cron"]
 	path = cron
-	url = git@github.com:davidmarble/cookbook-cron.git
+	url = git:://github.com/davidmarble/cookbook-cron.git
 [submodule "apt"]
 	path = apt
-	url = https://github.com/opscode-cookbooks/apt.git
+	url = git://github.com/opscode-cookbooks/apt.git
 [submodule "yum"]
 	path = yum
-	url = https://github.com/opscode-cookbooks/yum.git
+	url = git://github.com/opscode-cookbooks/yum.git
 [submodule "git"]
 	path = git
-	url = https://github.com/opscode-cookbooks/git.git
+	url = git://github.com/opscode-cookbooks/git.git
 [submodule "java"]
 	path = java
-	url = https://github.com/opscode-cookbooks/java.git
+	url = git://github.com/opscode-cookbooks/java.git
 [submodule "logrotate"]
 	path = logrotate
-	url = https://github.com/opscode-cookbooks/logrotate.git
+	url = git://github.com/opscode-cookbooks/logrotate.git
 [submodule "mercurial"]
 	path = mercurial
-	url = https://github.com/opscode-cookbooks/mercurial.git
+	url = git://github.com/opscode-cookbooks/mercurial.git
 [submodule "nginx"]
 	path = nginx
-	url = git@github.com:davidmarble/cookbook-nginx.git
+	url = git:://github.com/davidmarble/cookbook-nginx.git
 [submodule "openssh"]
 	path = openssh
-	url = https://github.com/opscode-cookbooks/openssh.git
+	url = git://github.com/opscode-cookbooks/openssh.git
 [submodule "utils"]
 	path = utils
-	url = git@github.com:davidmarble/cookbook-utils.git
+	url = git:://github.com/davidmarble/cookbook-utils.git
 [submodule "python"]
 	path = python
-	url = git@github.com:davidmarble/cookbook-python.git
+	url = git:://github.com/davidmarble/cookbook-python.git
 [submodule "rsync"]
 	path = rsync
-	url = https://github.com/opscode-cookbooks/rsync.git
+	url = git://github.com/opscode-cookbooks/rsync.git
 [submodule "sudo"]
 	path = sudo
-	url = git@github.com:davidmarble/cookbook-sudo.git
+	url = git:://github.com/davidmarble/cookbook-sudo.git
 [submodule "supervisor"]
 	path = supervisor
-	url = git@github.com:davidmarble/cookbook-supervisor.git
+	url = git:://github.com/davidmarble/cookbook-supervisor.git
 [submodule "vim"]
 	path = vim
-	url = https://github.com/opscode-cookbooks/vim.git
+	url = git://github.com/opscode-cookbooks/vim.git
 [submodule "webapp"]
 	path = webapp
-	url = git@github.com:davidmarble/cookbook-webapp.git
+	url = git:://github.com/davidmarble/cookbook-webapp.git
 [submodule "zlib"]
 	path = zlib
-	url = https://github.com/opscode-cookbooks/zlib.git
+	url = git://github.com/opscode-cookbooks/zlib.git
