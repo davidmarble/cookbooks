@@ -3,7 +3,7 @@
 	url = git://github.com/opscode-cookbooks/build-essential.git
 [submodule "cron"]
 	path = cron
-	url = git:://github.com/davidmarble/cookbook-cron.git
+	url = git://github.com/davidmarble/cookbook-cron.git
 [submodule "apt"]
 	path = apt
 	url = git://github.com/opscode-cookbooks/apt.git
@@ -24,31 +24,31 @@
 	url = git://github.com/opscode-cookbooks/mercurial.git
 [submodule "nginx"]
 	path = nginx
-	url = git:://github.com/davidmarble/cookbook-nginx.git
+	url = git://github.com/davidmarble/cookbook-nginx.git
 [submodule "openssh"]
 	path = openssh
 	url = git://github.com/opscode-cookbooks/openssh.git
 [submodule "utils"]
 	path = utils
-	url = git:://github.com/davidmarble/cookbook-utils.git
+	url = git://github.com/davidmarble/cookbook-utils.git
 [submodule "python"]
 	path = python
-	url = git:://github.com/davidmarble/cookbook-python.git
+	url = git://github.com/davidmarble/cookbook-python.git
 [submodule "rsync"]
 	path = rsync
 	url = git://github.com/opscode-cookbooks/rsync.git
 [submodule "sudo"]
 	path = sudo
-	url = git:://github.com/davidmarble/cookbook-sudo.git
+	url = git://github.com/davidmarble/cookbook-sudo.git
 [submodule "supervisor"]
 	path = supervisor
-	url = git:://github.com/davidmarble/cookbook-supervisor.git
+	url = git://github.com/davidmarble/cookbook-supervisor.git
 [submodule "vim"]
 	path = vim
 	url = git://github.com/opscode-cookbooks/vim.git
 [submodule "webapp"]
 	path = webapp
-	url = git:://github.com/davidmarble/cookbook-webapp.git
+	url = git://github.com/davidmarble/cookbook-webapp.git
 [submodule "zlib"]
 	path = zlib
 	url = git://github.com/opscode-cookbooks/zlib.git
