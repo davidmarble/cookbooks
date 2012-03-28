@@ -84,6 +84,8 @@ end
     # not_if "which npm"
 # end
 
-execute "curl http://npmjs.org/install.sh | sh" do
+package "curl"
+
+execute "curl http://npmjs.org/install.sh | clean=yes sh" do
     not_if "which npm"
 end

@@ -65,9 +65,9 @@ external_pid_file = '/var/run/postgresql/<%= node.postgresql9.version -%>-main.p
                                         # comma-separated list of addresses;
                                         # defaults to 'localhost', '*' = all
                                         # (change requires restart)
-port = <%= node.postgresql9.port -%>    # (change requires restart)
+port = <%= node.postgresql9.port %>     # (change requires restart)
 
-max_connections = <%= node.postgresql9.max_connections -%>    
+max_connections = <%= node.postgresql9.max_connections %>
 # (change requires restart)
 # Note:  Increasing max_connections costs ~400 bytes of shared memory per 
 # connection slot, plus lock space (see max_locks_per_transaction).  You might
@@ -122,7 +122,8 @@ ssl = true                              # (change requires restart)
 
 # - Memory -
 
-shared_buffers = <%= node.postgresql9.shared_buffers -%>
+# This should be roughly 25% of available RAM on the system.
+shared_buffers = <%= node.postgresql9.shared_buffers %>
                                         # min 128kB or max_connections*16kB
                                         # (change requires restart)
 #temp_buffers = 8MB                     # min 800kB
@@ -135,19 +136,6 @@ shared_buffers = <%= node.postgresql9.shared_buffers -%>
 #work_mem = 1MB                         # min 64kB
 #maintenance_work_mem = 16MB            # min 1MB
 #max_stack_depth = 2MB                  # min 100kB
-
-# - Free Space Map -
-
-<% if node.postgresql9.version == "8.4" %>
-<% # max_fsm_pages doesn't exist on 8.4 %>
-#max_fsm_pages = 153600                 # min max_fsm_relations*16, 6 bytes each
-                                        # (change requires restart)
-<% else %>
-max_fsm_pages = 153600                  # min max_fsm_relations*16, 6 bytes each
-                                        # (change requires restart)
-<% end %>
-#max_fsm_relations = 1000               # min 100, ~70 bytes each
-                                        # (change requires restart)
 
 # - Kernel Resource Usage -
 
@@ -275,7 +263,9 @@ max_fsm_pages = 153600                  # min max_fsm_relations*16, 6 bytes each
 #cpu_tuple_cost = 0.01                  # same scale as above
 #cpu_index_tuple_cost = 0.005           # same scale as above
 #cpu_operator_cost = 0.0025             # same scale as above
-#effective_cache_size = 128MB
+
+# This should be about 50% of the total system memory.
+effective_cache_size = <%= node.postgresql9.effective_cache_size %>
 
 # - Genetic Query Optimizer -
 
@@ -317,7 +307,8 @@ logging_collector = on                  # Enable capturing of stderr and csvlog
 # These are only used if logging_collector is on:
 log_directory = 'pg_log'                # directory where log files are written,
                                         # can be absolute or relative to PGDATA
-log_filename = 'postgresql-%a.log'      # log file name pattern,
+log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
+                                        # log file name pattern,
                                         # can include strftime() escapes
 #log_file_mode = 0600                   # creation mode for log files,
                                         # begin with 0 to use octal notation
@@ -405,7 +396,7 @@ log_rotation_size = 0                   # Automatic rotation of logfiles will
 #log_disconnections = off
 #log_duration = off
 #log_hostname = off
-#log_line_prefix = ''                   # special values:
+log_line_prefix = '%t'                  # special values:
                                         #   %a = application name
                                         #   %u = user name
                                         #   %d = database name

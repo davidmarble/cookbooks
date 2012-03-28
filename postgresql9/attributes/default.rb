@@ -5,4 +5,5 @@ default['postgresql9']['port'] = "5432"
 default['postgresql9']['max_connections'] = "100"
 default['postgresql9']['shared_buffers'] = "32MB"
 default['postgresql9']['ssl'] = "true"
+default['postgresql9']['effective_cache_size'] = "128MB"
 default['postgresql9']['extras'] = []

@@ -44,6 +44,7 @@ end
 
 utils_ensure_user "elasticsearch" do
     system true
+    update_if_exists false
 end
 
 [

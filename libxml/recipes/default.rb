@@ -14,7 +14,6 @@ when "debian", "ubuntu"
         action :run
     end
     package "libxml2"
-    package "libxslt"
     package "libxml2-dev"
     package "libxslt1.1"
     package "libxslt1-dev"

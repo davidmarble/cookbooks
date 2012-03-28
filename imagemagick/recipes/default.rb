@@ -2,7 +2,8 @@ include_recipe "ghostscript"
 
 packages = value_for_platform(
     ["centos","redhat","fedora"] => {'default' => ['ImageMagick']},
-    "default" => ['ImageMagick', 'libmagickwand-dev']
+    ["ubuntu","debian"] => {"default" => ['imagemagick', 'libmagickwand-dev']},
+    "default" => ['imagemagick']
   )
 
 packages.each do |devpkg|
