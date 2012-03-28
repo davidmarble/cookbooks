@@ -40,6 +40,7 @@ specifies a database to be created with the PostGIS template:
         }
     },
 
+See attributes/default.rb for more options.
 
 # License and Author
 
