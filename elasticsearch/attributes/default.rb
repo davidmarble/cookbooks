@@ -1,5 +1,5 @@
-#https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.1.tar.gz
-default[:elasticsearch][:version] = "0.19.1"
+#https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.3.tar.gz
+default[:elasticsearch][:version] = "0.19.8"
 default[:elasticsearch][:cluster_name] = "default"
 default[:elasticsearch][:port] = 9200
 
