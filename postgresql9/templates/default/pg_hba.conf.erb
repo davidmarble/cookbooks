@@ -72,21 +72,26 @@
 # listen on a non-local interface via the listen_addresses
 # configuration parameter, or via the -i or -h command line switches.
 
-
+# DO NOT DISABLE THE FIRST ENTRY!
+# If you change this first entry you will need to make sure that the database
+# super user can access the database using some other method. Noninteractive
+# access to all databases is required during automatic maintenance
+# (custom daily cronjobs, replication, and similar tasks).
 
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
+local   all             postgres                                trust
 
 # "local" is for Unix domain socket connections only
-local   all             all                                     peer
+local   all             all                                     <%= node.postgresql9.local_auth %>
 # IPv4 local connections:
 host    all             all             127.0.0.1/32            trust
 # IPv6 local connections:
 host    all             all             ::1/128                 trust
 # Allow replication connections from localhost, by a user with the
 # replication privilege.
-#local   replication     postgres                                peer
-#host    replication     postgres        127.0.0.1/32            ident
-#host    replication     postgres        ::1/128                 ident
+#local   replication     postgres                               peer
+#host    replication     postgres       127.0.0.1/32            ident
+#host    replication     postgres       ::1/128                 ident
 
 <% node.postgresql9.auth.each do |auth| -%>
 <%= auth %>

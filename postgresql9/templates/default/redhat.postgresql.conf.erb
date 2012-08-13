@@ -61,9 +61,9 @@
                                         # comma-separated list of addresses;
                                         # defaults to 'localhost', '*' = all
                                         # (change requires restart)
-port = <%= node.postgresql9.port -%>    # (change requires restart)
+port = <%= node.postgresql9.port -%>                             # (change requires restart)
 
-max_connections = <%= node.postgresql9.max_connections -%>    
+max_connections = <%= node.postgresql9.max_connections %>
 # (change requires restart)
 # Note:  Increasing max_connections costs ~400 bytes of shared memory per 
 # connection slot, plus lock space (see max_locks_per_transaction).  You might
@@ -82,12 +82,8 @@ max_connections = <%= node.postgresql9.max_connections -%>
 # - Security and Authentication -
 
 #authentication_timeout = 1min          # 1s-600s
-<% if node.postgresql9.ssl -%>
-ssl = true                              # (change requires restart)
-<% else -%>
-#ssl = off                              # (change requires restart)
-<% end -%>
-#ssl_ciphers = 'ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH'    # allowed SSL ciphers
+
+ssl = <%= node.postgresql9.ssl -%>                               # true or off (change #ssl_ciphers = 'ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH'    # allowed SSL ciphers
                                         # (change requires restart)
 #ssl_renegotiation_limit = 512MB        # amount of data between renegotiations
 #password_encryption = on
@@ -118,7 +114,7 @@ ssl = true                              # (change requires restart)
 
 # - Memory -
 
-shared_buffers = <%= node.postgresql9.shared_buffers -%>
+shared_buffers = <%= node.postgresql9.shared_buffers %>
                                         # min 128kB or max_connections*16kB
                                         # (change requires restart)
 #temp_buffers = 8MB                     # min 800kB

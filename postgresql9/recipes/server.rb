@@ -9,7 +9,7 @@ end
 
 if node[:postgresql9][:version].to_f == 9.1
 
-    if node.platform == 'ubuntu' and node[:platform_version].to_f == 11.10
+    if node.platform == 'ubuntu' and [11.10, 12.04].include?(node[:platform_version].to_f)
         execute "apt-get update" do
             action :run
         end
@@ -28,21 +28,6 @@ if node[:postgresql9][:version].to_f == 9.1
             package "libgdal1-dev"
         end
 
-        service "postgresql" do
-            enabled true
-            running true
-            supports :status => true, :restart => true, :reload => true
-            action [:enable, :start]
-        end
-        
-        template "#{node[:postgresql9][:dir]}/postgresql.conf" do
-          source "debian.postgresql.conf.erb"
-          owner "postgres"
-          group "postgres"
-          mode 0600
-          notifies :restart, resources(:service => "postgresql"), :immediately
-        end
-        
         cookbook_file "/var/lib/postgresql/.bash_profile" do
             source "bash_profile_postgres"
             owner "postgres"
@@ -62,6 +47,30 @@ if node[:postgresql9][:version].to_f == 9.1
             owner "root"
             group "root"
             mode 0755
+        end
+        
+        # Copy conf twice as a quick way to make sure its contents are
+        # updated before any service start/restart
+        template "#{node[:postgresql9][:dir]}/postgresql.conf" do
+          source "debian.postgresql.conf.erb"
+          owner "postgres"
+          group "postgres"
+          mode 0600
+        end
+        
+        service "postgresql" do
+            enabled true
+            running true
+            supports :status => true, :restart => true, :reload => true
+            action [:enable, :start]
+        end
+        
+        template "#{node[:postgresql9][:dir]}/postgresql.conf" do
+          source "debian.postgresql.conf.erb"
+          owner "postgres"
+          group "postgres"
+          mode 0600
+          notifies :restart, resources(:service => "postgresql"), :immediately
         end
         
     # http://yum.postgresql.org/repopackages.php
@@ -95,6 +104,27 @@ if node[:postgresql9][:version].to_f == 9.1
             package "proj-devel"
             package "geos-devel"
         end
+                
+        template "/etc/profile.d/postgresql.sh" do
+            source "redhat.postgresql.sh"
+            owner "root"
+            group "root"
+            mode 0755
+        end
+
+        template "/var/lib/pgsql/.bashrc" do
+            source "redhat.bashrc_postgres.erb"
+            owner "postgres"
+            group "postgres"
+            mode 0600
+        end
+        
+        cookbook_file "/var/lib/pgsql/.bash_profile" do
+            source "bash_profile_postgres"
+            owner "postgres"
+            group "postgres"
+            mode 0644
+        end
         
         execute "ln -s /etc/init.d/postgresql-9.1 /etc/init.d/postgresql" do
             not_if { ::FileTest.exist?("/etc/init.d/postgresql") }
@@ -104,8 +134,19 @@ if node[:postgresql9][:version].to_f == 9.1
             not_if { ::FileTest.exist?(File.join(node[:postgresql9][:dir], node[:postgresql9][:version])) }
         end
 
+        # Copy conf twice as a quick way to make sure its contents are
+        # updated before any service start/restart
+        template "#{node[:postgresql9][:dir]}/postgresql.conf" do
+            source "redhat.postgresql.conf.erb"
+            owner "postgres"
+            group "postgres"
+            mode 0600
+        end
+        
         service "postgresql" do
-            supports :restart => true, :status => true, :reload => true
+            enabled true
+            running true
+            supports :status => true, :restart => true, :reload => true
             action [:enable, :start]
         end
 
@@ -116,31 +157,14 @@ if node[:postgresql9][:version].to_f == 9.1
             mode 0600
             notifies :restart, resources(:service => "postgresql"), :immediately
         end
-        
-        cookbook_file "/var/lib/pgsql/.bash_profile" do
-            source "bash_profile_postgres"
-            owner "postgres"
-            group "postgres"
-            mode 0644
-        end
-
-        template "/var/lib/pgsql/.bashrc" do
-            source "redhat.bashrc_postgres.erb"
-            owner "postgres"
-            group "postgres"
-            mode 0600
-        end
-        
-        template "/etc/profile.d/postgresql.sh" do
-            source "redhat.postgresql.sh"
-            owner "root"
-            group "root"
-            mode 0755
-        end
-        
     else
         # TODO: Build from source
         
+    end
+    
+    # Problems with peer local auth in ubuntu
+    if ["debian", "ubuntu"].include?(node.platform)
+        node[:postgresql9][:local_auth] = "trust"
     end
     
     template "#{node[:postgresql9][:dir]}/pg_hba.conf" do
