@@ -13,7 +13,7 @@ when "redhat", "centos", "fedora", "suse"
         rescue
         end
     
-        script "Down and install redis #{redis_version}" do
+        script "Download and install redis #{redis_version}" do
             interpreter "bash"
             user "root"
             cwd Chef::Config[:file_cache_path]
@@ -63,10 +63,7 @@ when "debian", "ubuntu"
     
 end
 
-service "redis-server" do
-    supports :restart => true, :reload => true
-    action :enable
-end
+daemonize = node[:redis][:daemonize]
 
 directory "/etc/redis/" do
     owner "root"
@@ -74,22 +71,43 @@ directory "/etc/redis/" do
     mode 0755
 end
 
-template "/etc/redis/redis.conf" do
-    source "etc/redis/redis.conf.erb"
-    owner "root"
-    group "root"
-    mode 0644
-    notifies :restart, resources(:service => "redis-server"), :immediately
-end
-
-case node.platform
-when "redhat", "centos", "fedora"
-    execute "sudo /sbin/service redis-server start" do
-        not_if "pgrep -f redis-server"
+if daemonize == "yes"
+    service "redis-server" do
+        supports :restart => true, :reload => true
+        action :enable
     end
-when "debian", "ubuntu"
-    execute "sudo /etc/init.d/redis-server start" do
-        not_if "pgrep -f redis-server"
+
+    template "/etc/redis/redis.conf" do
+        source "etc/redis/redis.conf.erb"
+        owner "root"
+        group "root"
+        mode 0644
+        notifies :restart, resources(:service => "redis-server"), :immediately
+    end
+
+    case node.platform
+    when "redhat", "centos", "fedora"
+        execute "sudo /sbin/service redis-server start" do
+            not_if "pgrep -f redis-server"
+        end
+    when "debian", "ubuntu"
+        execute "sudo /etc/init.d/redis-server start" do
+            not_if "pgrep -f redis-server"
+        end
+    end
+else
+    begin
+        service "redis-server" do
+            action :disable
+        end
+    rescue
+    end
+    
+    template "/etc/redis/redis.conf" do
+        source "etc/redis/redis.conf.erb"
+        owner "root"
+        group "root"
+        mode 0644
     end
 end
 

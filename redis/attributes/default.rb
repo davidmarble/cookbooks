@@ -1,1 +1,6 @@
-default[:redis][:version] = "2.4.9"
+default[:redis][:version] = "2.4.16"
+default[:redis][:loglevel] = "notice"
+default[:redis][:num_databases] = "16"
+default[:redis][:maxmemory] = "256MB"
+default[:redis][:port] = "6379"
+default[:redis][:daemonize] = "yes"
