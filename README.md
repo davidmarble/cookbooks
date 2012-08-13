@@ -1,5 +1,7 @@
 # Description
 
+https://github.com/davidmarble/cookbooks
+
 This repository is all the cookbooks that I currently use or need to maintain 
 for various projects. Those that have been forked from Opscode or others and 
 those that warrant a separate repo are included as submodules.
