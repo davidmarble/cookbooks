@@ -16,18 +16,28 @@ include_recipe "libevent"
 
 package "pgbouncer"
 
-script "Check pgbouncer permissions" do
+case node['platform']
+when "ubuntu","debian"
+    user = "postgres"
+    group = "root"
+when "centos","redhat","fedora","amazon"
+    user = "pgbouncer"
+    group = "pgbouncer"    
+end
+
+script "Check pgbouncer logfile permissions" do
     interpreter "bash"
     user "root"
     code <<-EOH
     touch /var/log/pgbouncer.log
-    chown postgres:postgres /var/log/pgbouncer.log
+    chown #{user}:#{group} /var/log/pgbouncer.log
+    chmod 0600 /var/log/pgbouncer.log
     EOH
 end
 
 directory "/etc/pgbouncer/" do
-    owner "postgres"
-    group "postgres"
+    owner "#{user}"
+    group "#{group}"
     recursive true
     mode 0755
 end
@@ -39,7 +49,7 @@ end
 
 template "/etc/default/pgbouncer" do
     source "etc/default/pgbouncer.erb"
-    owner "root"
+    owner "#{user}"
     group "root"
     mode 0644
     notifies :reload, resources(:service => "pgbouncer")
@@ -47,7 +57,7 @@ end
 
 template "/etc/pgbouncer/pgbouncer.ini" do
     source "etc/pgbouncer/pgbouncer.ini.erb"
-    owner "root"
+    owner "#{user}"
     group "root"
     mode 0644
     notifies :reload, resources(:service => "pgbouncer")
@@ -55,8 +65,8 @@ end
 
 template "/etc/pgbouncer/userlist.txt" do
     source "etc/pgbouncer/userlist.txt.erb"
-    owner "postgres"
-    group "postgres"
+    owner "#{user}"
+    group "root"
     mode 0644
     notifies :reload, resources(:service => "pgbouncer")
 end
